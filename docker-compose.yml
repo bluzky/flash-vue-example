@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  server:
+    build: ./server
+    entrypoint:
+      - /bin/sh
+      - start.sh
+    environment:
+      FLASK_DEBUG: "on"
+      FLASK_APP: ./app.py
+      PORT: 5001
+    ports:
+      - 5001:5001
+    volumes:
+      - ./server:/app
+      - /app/__pycache__/
+
+  client:
+    build: ./client
+    command:
+      - yarn
+      - dev
+      - --
+      - --host
+      - --port
+      - "5100"
+    ports:
+      - 5100:5100
+    volumes:
+      - ./client:/app
+      - /app/node_modules/
+      - /app/dist/
